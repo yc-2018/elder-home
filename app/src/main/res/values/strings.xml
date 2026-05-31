@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">老人桌面助手</string>
+    <string name="app_name">桌面快捷助手</string>
     <string name="shortcut_widget_name">大应用入口</string>
     <string name="shortcut_widget_1x1">大应用入口 1x1</string>
     <string name="shortcut_widget_1x2">大应用入口 1x2</string>
