@@ -33,8 +33,12 @@ jobs:
       - name: Build debug APK
         run: gradle :app:assembleDebug
 
+      - name: Prepare debug APK artifact
+        run: cp app/build/outputs/apk/debug/app-debug.apk elder-home-helper-debug.apk
+
       - name: Upload debug APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: elder-home-helper-debug.apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: elder-home-helper-debug.apk
+          archive: false
+          if-no-files-found: error
