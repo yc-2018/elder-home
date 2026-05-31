@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,12 +24,27 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appWidgetManager = AppWidgetManager.getInstance(this);
+        LinearLayout mainRoot = findViewById(R.id.mainRoot);
+        mainRoot.setOnApplyWindowInsetsListener((view, insets) -> {
+            int side = dp(18);
+            int top = side;
+            int bottom = side;
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                top += insets.getSystemWindowInsetTop();
+                bottom += insets.getSystemWindowInsetBottom();
+            }
+            view.setPadding(side, top, side, bottom);
+            return insets;
+        });
+        mainRoot.requestApplyInsets();
         statusText = findViewById(R.id.statusText);
         appList = findViewById(R.id.appList);
         Button addBatteryButton = findViewById(R.id.addBatteryButton);
         Button addClockButton = findViewById(R.id.addClockButton);
+        Button addUrlButton = findViewById(R.id.addUrlButton);
         addBatteryButton.setOnClickListener(v -> requestPinWidget(BatteryWidgetProvider.class, "大电量"));
         addClockButton.setOnClickListener(v -> requestPinWidget(ClockWidgetProvider.class, "大钟表"));
+        addUrlButton.setOnClickListener(v -> startActivity(ShortcutConfigureActivity.createUrlIntent(this)));
         loadApps();
     }
 
@@ -70,5 +86,9 @@ public class MainActivity extends Activity {
         } else {
             Toast.makeText(this, "没有弹出确认窗口，请长按桌面手动添加小部件", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 }

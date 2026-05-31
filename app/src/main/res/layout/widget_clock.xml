@@ -13,6 +13,19 @@
         android:hand_hour="@drawable/clock_hour_hand"
         android:hand_minute="@drawable/clock_minute_hand" />
 
+    <TextClock
+        android:id="@+id/clockSecondText"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:format12Hour="HH:mm:ss"
+        android:format24Hour="HH:mm:ss"
+        android:gravity="center"
+        android:textColor="@color/elder_text"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="40dp"
         android:layout_height="40dp"

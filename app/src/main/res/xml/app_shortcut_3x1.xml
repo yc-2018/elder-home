@@ -1,5 +1,4 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.local.elderhomehelper.ShortcutConfigureActivity"
     android:initialLayout="@layout/widget_app_shortcut"
     android:minHeight="@dimen/app_widget_1_cell"
     android:minResizeHeight="@dimen/app_widget_1_cell"

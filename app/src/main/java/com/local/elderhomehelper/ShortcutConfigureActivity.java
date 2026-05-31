@@ -12,10 +12,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,20 +33,31 @@ public class ShortcutConfigureActivity extends Activity {
     private static final String EXTRA_LABEL = "label";
     private static final String EXTRA_PACKAGE = "package";
     private static final String EXTRA_ACTIVITY = "activity";
+    private static final String EXTRA_URL_MODE = "url_mode";
+
+    private ScrollView configScroll;
     private TextView titleText;
     private TextView chosenAppText;
     private TextView helpText;
     private EditText nameEdit;
+    private EditText urlEdit;
+    private LinearLayout urlPanel;
     private Spinner widthSpinner;
     private Spinner heightSpinner;
     private ImageView iconPreview;
     private Button addButton;
+    private Button defaultIconButton;
+    private Button chooseAppButton;
 
     private String label;
     private String packageName;
     private String activityName;
+    private String iconPackageName;
+    private String iconActivityName;
     private Bitmap selectedBitmap;
     private boolean customImageSelected;
+    private boolean urlMode;
+    private boolean isSaving;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     public static Intent createIntent(Context context, AppEntry app) {
@@ -53,29 +68,44 @@ public class ShortcutConfigureActivity extends Activity {
         return intent;
     }
 
+    public static Intent createUrlIntent(Context context) {
+        Intent intent = new Intent(context, ShortcutConfigureActivity.class);
+        intent.putExtra(EXTRA_URL_MODE, true);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setResult(RESULT_CANCELED);
+        Window window = getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.elder_bg));
+        window.setNavigationBarColor(getResources().getColor(R.color.elder_bg));
         setContentView(R.layout.activity_configure_shortcut);
 
+        configScroll = findViewById(R.id.configScroll);
         titleText = findViewById(R.id.titleText);
         chosenAppText = findViewById(R.id.chosenAppText);
         helpText = findViewById(R.id.helpText);
         nameEdit = findViewById(R.id.nameEdit);
+        urlEdit = findViewById(R.id.urlEdit);
+        urlPanel = findViewById(R.id.urlPanel);
         widthSpinner = findViewById(R.id.widthSpinner);
         heightSpinner = findViewById(R.id.heightSpinner);
         iconPreview = findViewById(R.id.iconPreview);
-        Button chooseAppButton = findViewById(R.id.chooseAppButton);
-        Button defaultIconButton = findViewById(R.id.defaultIconButton);
+        chooseAppButton = findViewById(R.id.chooseAppButton);
+        defaultIconButton = findViewById(R.id.defaultIconButton);
+        Button appIconButton = findViewById(R.id.appIconButton);
         Button pickImageButton = findViewById(R.id.pickImageButton);
         addButton = findViewById(R.id.addButton);
 
+        applySafeAreaPadding();
         initSpinners();
         readIntent();
 
         chooseAppButton.setOnClickListener(v -> showAppChooser());
         defaultIconButton.setOnClickListener(v -> useDefaultIcon());
+        appIconButton.setOnClickListener(v -> showIconAppChooser());
         pickImageButton.setOnClickListener(v -> chooseImage());
         addButton.setOnClickListener(v -> addToDesktop());
     }
@@ -83,17 +113,23 @@ public class ShortcutConfigureActivity extends Activity {
     private void readIntent() {
         Intent intent = getIntent();
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        urlMode = intent.getBooleanExtra(EXTRA_URL_MODE, false);
         label = intent.getStringExtra(EXTRA_LABEL);
         packageName = intent.getStringExtra(EXTRA_PACKAGE);
         activityName = intent.getStringExtra(EXTRA_ACTIVITY);
 
-        if (label == null || packageName == null || activityName == null) {
-            ShortcutPrefs.ShortcutData pending = ShortcutPrefs.loadPending(this);
-            if (pending != null) {
-                label = pending.label;
-                packageName = pending.packageName;
-                activityName = pending.activityName;
-            }
+        if (urlMode) {
+            titleText.setText("设置 URL 入口");
+            chosenAppText.setText("当前类型：应用 URL");
+            chooseAppButton.setVisibility(View.GONE);
+            urlPanel.setVisibility(View.VISIBLE);
+            nameEdit.setHint("小红书");
+            defaultIconButton.setText("清空图标");
+            addButton.setText("添加 URL 到桌面");
+            helpText.setText("填写名称和 URL，再选择图标。URL 例子：xhsdiscover://search/result");
+            iconPreview.setImageResource(R.drawable.ic_launcher_foreground);
+            addButton.setEnabled(true);
+            return;
         }
 
         if (label == null || packageName == null || activityName == null) {
@@ -147,10 +183,34 @@ public class ShortcutConfigureActivity extends Activity {
         dialog.show();
     }
 
+    private void showIconAppChooser() {
+        final List<AppEntry> apps = AppLoader.loadLaunchableApps(this);
+        if (apps.isEmpty()) {
+            Toast.makeText(this, "没有找到可选图标", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        InstalledAppAdapter adapter = new InstalledAppAdapter(this, apps);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("选择图标")
+                .setAdapter(adapter, (dialogInterface, which) -> {
+                    AppEntry app = apps.get(which);
+                    iconPackageName = app.packageName;
+                    iconActivityName = app.activityName;
+                    selectedBitmap = IconStore.drawableToBitmap(app.icon);
+                    iconPreview.setImageBitmap(selectedBitmap);
+                    customImageSelected = false;
+                })
+                .create();
+        dialog.show();
+    }
+
     private void applySelectedApp(String newLabel, String newPackageName, String newActivityName, boolean resetName) {
         label = newLabel;
         packageName = newPackageName;
         activityName = newActivityName;
+        iconPackageName = newPackageName;
+        iconActivityName = newActivityName;
         titleText.setText("设置 " + label);
         chosenAppText.setText("当前应用：" + label);
         if (resetName) {
@@ -161,8 +221,20 @@ public class ShortcutConfigureActivity extends Activity {
     }
 
     private void useDefaultIcon() {
+        if (urlMode) {
+            iconPackageName = null;
+            iconActivityName = null;
+            selectedBitmap = null;
+            iconPreview.setImageResource(R.drawable.ic_launcher_foreground);
+            customImageSelected = false;
+            return;
+        }
+        loadIconFromApp(packageName, activityName);
+    }
+
+    private void loadIconFromApp(String iconPackage, String iconActivity) {
         try {
-            Drawable icon = getPackageManager().getActivityIcon(new ComponentName(packageName, activityName));
+            Drawable icon = getPackageManager().getActivityIcon(new ComponentName(iconPackage, iconActivity));
             selectedBitmap = IconStore.drawableToBitmap(icon);
             iconPreview.setImageBitmap(selectedBitmap);
             customImageSelected = false;
@@ -208,15 +280,28 @@ public class ShortcutConfigureActivity extends Activity {
     }
 
     private void addToDesktop() {
-        if (packageName == null || activityName == null) {
+        if (isSaving) {
+            return;
+        }
+        if (!urlMode && (packageName == null || activityName == null)) {
             Toast.makeText(this, "没有可添加的应用", Toast.LENGTH_LONG).show();
             return;
         }
 
         String displayName = nameEdit.getText().toString().trim();
         if (displayName.length() == 0) {
-            displayName = label;
+            displayName = urlMode ? "URL 入口" : label;
         }
+
+        String url = urlEdit.getText().toString().trim();
+        if (urlMode && url.length() == 0) {
+            Toast.makeText(this, "请先填写应用 URL", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        isSaving = true;
+        addButton.setEnabled(false);
+        addButton.setText(appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID ? "正在保存..." : "正在添加...");
 
         String iconPath = null;
         if (selectedBitmap != null) {
@@ -228,7 +313,9 @@ public class ShortcutConfigureActivity extends Activity {
             }
         }
 
-        ShortcutPrefs.ShortcutData shortcutData = ShortcutPrefs.create(packageName, activityName, displayName, iconPath);
+        ShortcutPrefs.ShortcutData shortcutData = urlMode
+                ? ShortcutPrefs.createUrl(displayName, url, iconPackageName, iconActivityName, iconPath)
+                : ShortcutPrefs.create(packageName, activityName, displayName, iconPath);
 
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             saveExistingWidget(shortcutData);
@@ -259,6 +346,9 @@ public class ShortcutConfigureActivity extends Activity {
 
         if (!manager.isRequestPinAppWidgetSupported()) {
             Toast.makeText(this, "当前桌面不支持直接添加。请长按桌面，进入小部件，选择大应用入口。", Toast.LENGTH_LONG).show();
+            isSaving = false;
+            addButton.setEnabled(true);
+            addButton.setText("添加到桌面");
             return;
         }
 
@@ -273,8 +363,31 @@ public class ShortcutConfigureActivity extends Activity {
         boolean requested = manager.requestPinAppWidget(provider, null, successCallback);
         if (requested) {
             Toast.makeText(this, "请在桌面弹窗里确认添加", Toast.LENGTH_LONG).show();
+            finish();
         } else {
             Toast.makeText(this, "没有弹出确认窗口，请长按桌面手动添加小部件", Toast.LENGTH_LONG).show();
+            isSaving = false;
+            addButton.setEnabled(true);
+            addButton.setText("添加到桌面");
         }
+    }
+
+    private void applySafeAreaPadding() {
+        configScroll.setOnApplyWindowInsetsListener((view, insets) -> {
+            int side = dp(18);
+            int top = side;
+            int bottom = side;
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                top += insets.getSystemWindowInsetTop();
+                bottom += insets.getSystemWindowInsetBottom();
+            }
+            view.setPadding(0, top, 0, bottom);
+            return insets;
+        });
+        configScroll.requestApplyInsets();
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
     }
 }

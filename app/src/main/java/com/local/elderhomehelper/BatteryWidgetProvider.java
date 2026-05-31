@@ -38,7 +38,7 @@ public class BatteryWidgetProvider extends AppWidgetProvider {
         }
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_battery);
-        views.setTextViewText(R.id.batteryPercent, percent >= 0 ? percent + "%" : "--%");
+        views.setTextViewText(R.id.batteryLabel, percent >= 0 ? "电量\n" + percent + "%" : "电量\n--%");
         int[] segmentIds = new int[]{
                 R.id.batterySegment1,
                 R.id.batterySegment2,

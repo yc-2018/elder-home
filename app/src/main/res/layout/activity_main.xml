@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/elder_bg"
@@ -52,6 +53,17 @@
             android:textSize="17sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/addUrlButton"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_secondary"
+        android:text="添加 URL 入口"
+        android:textColor="@color/elder_accent"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/appList"

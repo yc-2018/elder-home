@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.appwidget.AppWidgetProvider;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -98,10 +100,22 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
             return;
         }
 
-        Intent launchIntent = new Intent(Intent.ACTION_MAIN);
-        launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        launchIntent.setComponent(new ComponentName(data.packageName, data.activityName));
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        Intent launchIntent;
+        if (ShortcutPrefs.TYPE_URL.equals(data.type)) {
+            launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.url));
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(launchIntent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(context, "没有应用能打开这个 URL", Toast.LENGTH_LONG).show();
+            }
+            return;
+        } else {
+            launchIntent = new Intent(Intent.ACTION_MAIN);
+            launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            launchIntent.setComponent(new ComponentName(data.packageName, data.activityName));
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        }
 
         PackageManager packageManager = context.getPackageManager();
         if (launchIntent.resolveActivity(packageManager) == null) {
@@ -122,9 +136,15 @@ public class ShortcutWidgetProvider extends AppWidgetProvider {
             }
         }
 
+        String iconPackage = data.iconPackageName != null ? data.iconPackageName : data.packageName;
+        String iconActivity = data.iconActivityName != null ? data.iconActivityName : data.activityName;
+        if (iconPackage == null || iconActivity == null) {
+            return null;
+        }
+
         try {
             Drawable drawable = context.getPackageManager().getActivityIcon(
-                    new ComponentName(data.packageName, data.activityName)
+                    new ComponentName(iconPackage, iconActivity)
             );
             Bitmap bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
