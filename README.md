@@ -8,13 +8,19 @@
 - 桌面入口可使用应用默认图标，也可选择自己的图片。
 - 小米/MIUI/HyperOS 可能需要在系统设置里给本应用打开“桌面快捷方式 / 添加桌面快捷方式”权限。
 
+## 成品效果
+
+| 添加桌面入口 | 设置应用入口 | 桌面小组件效果 |
+| --- | --- | --- |
+| <img src="docs/screenshots/add-entry.jpg" alt="添加桌面入口" width="240"> | <img src="docs/screenshots/configure-entry.jpg" alt="设置应用入口" width="240"> | <img src="docs/screenshots/desktop-widgets.jpg" alt="桌面小组件效果" width="240"> |
+
 ## 构建 APK
 
 本仓库不提交 Gradle Wrapper，也不要求本地下载依赖。把代码推到 GitHub 后：
 
 1. 打开仓库的 `Actions` 页面。
 2. 运行或等待 `Android Debug APK` 工作流完成。
-3. 在工作流结果的 `Artifacts` 里下载 `elder-home-helper-debug.apk`。
+3. 在工作流结果的 `Artifacts` 里下载 `elder-home-helper-debug.apk`，或在 [GitHub Releases](https://github.com/yc-2018/elder-home/releases) 页面下载最新 debug APK。
 4. 把 APK 安装到手机上测试。
 
 如果桌面没有弹出“添加到桌面”的确认窗口，请长按桌面，进入小部件，选择对应尺寸的“大应用入口”，再点小组件上的“点我设置”。

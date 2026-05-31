@@ -5,6 +5,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,3 +45,17 @@ jobs:
           path: elder-home-helper-debug.apk
           archive: false
           if-no-files-found: error
+
+      - name: Upload debug APK to Release
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag -f debug-latest "$GITHUB_SHA"
+          git push origin debug-latest --force
+          if gh release view debug-latest >/dev/null 2>&1; then
+            gh release edit debug-latest --title "Latest Debug APK" --notes "Latest debug APK built from main."
+            gh release upload debug-latest elder-home-helper-debug.apk --clobber
+          else
+            gh release create debug-latest elder-home-helper-debug.apk --title "Latest Debug APK" --notes "Latest debug APK built from main."
+          fi
