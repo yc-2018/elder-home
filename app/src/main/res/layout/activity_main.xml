@@ -20,7 +20,7 @@
         android:layout_marginTop="14dp"
         android:background="@drawable/card_bg"
         android:padding="14dp"
-        android:text="提醒：如果桌面没有弹出添加窗口，请到系统设置里给“老人桌面助手”打开“桌面快捷方式 / 添加桌面快捷方式”权限。"
+        android:text="提醒：如果桌面没有弹出添加窗口，请到系统设置里给“桌面快捷助手”打开“桌面快捷方式 / 添加桌面快捷方式”权限。"
         android:textColor="@color/elder_warning"
         android:textSize="18sp"
         android:textStyle="bold" />
