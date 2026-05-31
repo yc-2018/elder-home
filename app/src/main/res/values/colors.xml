@@ -1,0 +1,9 @@
+<resources>
+    <color name="elder_bg">#F7F7F2</color>
+    <color name="elder_surface">#FFFFFF</color>
+    <color name="elder_text">#1D1D1F</color>
+    <color name="elder_muted">#676767</color>
+    <color name="elder_accent">#1F7A5A</color>
+    <color name="elder_accent_dark">#15573F</color>
+    <color name="elder_warning">#B33A3A</color>
+</resources>

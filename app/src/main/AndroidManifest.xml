@@ -1,0 +1,247 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_launcher_foreground"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".ShortcutConfigureActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".PinResultReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".BatteryWidgetProvider"
+            android:exported="true"
+            android:label="@string/battery_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/battery_widget" />
+        </receiver>
+
+        <receiver
+            android:name=".ClockWidgetProvider"
+            android:exported="true"
+            android:label="@string/clock_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/clock_widget" />
+        </receiver>
+
+        <receiver
+            android:name=".ShortcutWidget1x1"
+            android:exported="true"
+            android:label="@string/shortcut_widget_1x1">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_1x1" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget1x2"
+            android:exported="true"
+            android:label="@string/shortcut_widget_1x2">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_1x2" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget1x3"
+            android:exported="true"
+            android:label="@string/shortcut_widget_1x3">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_1x3" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget1x4"
+            android:exported="true"
+            android:label="@string/shortcut_widget_1x4">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_1x4" />
+        </receiver>
+
+        <receiver
+            android:name=".ShortcutWidget2x1"
+            android:exported="true"
+            android:label="@string/shortcut_widget_2x1">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_2x1" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget2x2"
+            android:exported="true"
+            android:label="@string/shortcut_widget_2x2">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_2x2" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget2x3"
+            android:exported="true"
+            android:label="@string/shortcut_widget_2x3">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_2x3" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget2x4"
+            android:exported="true"
+            android:label="@string/shortcut_widget_2x4">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_2x4" />
+        </receiver>
+
+        <receiver
+            android:name=".ShortcutWidget3x1"
+            android:exported="true"
+            android:label="@string/shortcut_widget_3x1">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_3x1" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget3x2"
+            android:exported="true"
+            android:label="@string/shortcut_widget_3x2">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_3x2" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget3x3"
+            android:exported="true"
+            android:label="@string/shortcut_widget_3x3">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_3x3" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget3x4"
+            android:exported="true"
+            android:label="@string/shortcut_widget_3x4">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_3x4" />
+        </receiver>
+
+        <receiver
+            android:name=".ShortcutWidget4x1"
+            android:exported="true"
+            android:label="@string/shortcut_widget_4x1">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_4x1" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget4x2"
+            android:exported="true"
+            android:label="@string/shortcut_widget_4x2">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_4x2" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget4x3"
+            android:exported="true"
+            android:label="@string/shortcut_widget_4x3">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_4x3" />
+        </receiver>
+        <receiver
+            android:name=".ShortcutWidget4x4"
+            android:exported="true"
+            android:label="@string/shortcut_widget_4x4">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_shortcut_4x4" />
+        </receiver>
+    </application>
+</manifest>

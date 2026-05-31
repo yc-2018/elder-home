@@ -1,0 +1,12 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.local.elderhomehelper.ShortcutConfigureActivity"
+    android:initialLayout="@layout/widget_app_shortcut"
+    android:minHeight="@dimen/app_widget_3_cells"
+    android:minResizeHeight="@dimen/app_widget_3_cells"
+    android:minResizeWidth="@dimen/app_widget_3_cells"
+    android:minWidth="@dimen/app_widget_3_cells"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellHeight="3"
+    android:targetCellWidth="3"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen" />

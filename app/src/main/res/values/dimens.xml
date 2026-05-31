@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="app_widget_1_cell">40dp</dimen>
+    <dimen name="app_widget_2_cells">110dp</dimen>
+    <dimen name="app_widget_3_cells">180dp</dimen>
+    <dimen name="app_widget_4_cells">250dp</dimen>
+</resources>

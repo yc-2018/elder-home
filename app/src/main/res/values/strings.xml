@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">老人桌面助手</string>
+    <string name="battery_widget_name">大电量</string>
+    <string name="clock_widget_name">大钟表</string>
+    <string name="shortcut_widget_name">大应用入口</string>
+    <string name="shortcut_widget_1x1">大应用入口 1x1</string>
+    <string name="shortcut_widget_1x2">大应用入口 1x2</string>
+    <string name="shortcut_widget_1x3">大应用入口 1x3</string>
+    <string name="shortcut_widget_1x4">大应用入口 1x4</string>
+    <string name="shortcut_widget_2x1">大应用入口 2x1</string>
+    <string name="shortcut_widget_2x2">大应用入口 2x2</string>
+    <string name="shortcut_widget_2x3">大应用入口 2x3</string>
+    <string name="shortcut_widget_2x4">大应用入口 2x4</string>
+    <string name="shortcut_widget_3x1">大应用入口 3x1</string>
+    <string name="shortcut_widget_3x2">大应用入口 3x2</string>
+    <string name="shortcut_widget_3x3">大应用入口 3x3</string>
+    <string name="shortcut_widget_3x4">大应用入口 3x4</string>
+    <string name="shortcut_widget_4x1">大应用入口 4x1</string>
+    <string name="shortcut_widget_4x2">大应用入口 4x2</string>
+    <string name="shortcut_widget_4x3">大应用入口 4x3</string>
+    <string name="shortcut_widget_4x4">大应用入口 4x4</string>
+</resources>
