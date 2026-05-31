@@ -33,14 +33,6 @@ public final class ShortcutPrefs {
         return data;
     }
 
-    public static void savePending(Context context, ShortcutData data) {
-        save(context, PENDING_ID, data);
-    }
-
-    public static ShortcutData loadPending(Context context) {
-        return load(context, PENDING_ID);
-    }
-
     public static void clearPending(Context context) {
         delete(context, PENDING_ID);
     }

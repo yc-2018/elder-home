@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">老人桌面助手</string>
-    <string name="battery_widget_name">大电量</string>
-    <string name="clock_widget_name">大钟表</string>
     <string name="shortcut_widget_name">大应用入口</string>
     <string name="shortcut_widget_1x1">大应用入口 1x1</string>
     <string name="shortcut_widget_1x2">大应用入口 1x2</string>

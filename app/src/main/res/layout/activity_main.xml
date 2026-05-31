@@ -9,69 +9,93 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="选择要放到桌面的应用"
+        android:text="添加桌面入口"
         android:textColor="@color/elder_text"
-        android:textSize="28sp"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/card_bg"
+        android:padding="14dp"
+        android:text="提醒：如果桌面没有弹出添加窗口，请到系统设置里给“老人桌面助手”打开“桌面快捷方式 / 添加桌面快捷方式”权限。"
+        android:textColor="@color/elder_warning"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/statusText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="正在读取应用..."
+        android:layout_marginTop="10dp"
+        android:text="先选择桌面占几格，添加后回到桌面点“点我设置”，再选择应用或 URL。"
         android:textColor="@color/elder_muted"
-        android:textSize="17sp" />
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="22dp"
+        android:background="@drawable/card_bg"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <Button
-            android:id="@+id/addBatteryButton"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginRight="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_secondary"
-            android:text="添加大电量"
-            android:textColor="@color/elder_accent"
-            android:textSize="17sp"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="桌面格子大小"
+            android:textColor="@color/elder_text"
+            android:textSize="21sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/addClockButton"
-            android:layout_width="0dp"
-            android:layout_height="58dp"
-            android:layout_marginLeft="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_secondary"
-            android:text="添加大钟表"
-            android:textColor="@color/elder_accent"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="宽"
+                android:textColor="@color/elder_text"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/widthSpinner"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="高"
+                android:textColor="@color/elder_text"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/heightSpinner"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/addUrlButton"
+        android:id="@+id/addShortcutButton"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button_secondary"
-        android:text="添加 URL 入口"
-        android:textColor="@color/elder_accent"
-        android:textSize="17sp"
+        android:layout_height="68dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/button_primary"
+        android:text="添加空入口到桌面"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
         android:textStyle="bold" />
-
-    <ListView
-        android:id="@+id/appList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_weight="1"
-        android:divider="#D8D8D0"
-        android:dividerHeight="1dp"
-        android:fastScrollEnabled="true" />
 </LinearLayout>

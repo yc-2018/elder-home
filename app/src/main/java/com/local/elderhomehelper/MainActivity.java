@@ -1,29 +1,27 @@
 package com.local.elderhomehelper;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.List;
-
 public class MainActivity extends Activity {
-    private TextView statusText;
-    private ListView appList;
     private AppWidgetManager appWidgetManager;
+    private Spinner widthSpinner;
+    private Spinner heightSpinner;
+    private Button addShortcutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appWidgetManager = AppWidgetManager.getInstance(this);
+
         LinearLayout mainRoot = findViewById(R.id.mainRoot);
         mainRoot.setOnApplyWindowInsetsListener((view, insets) -> {
             int side = dp(18);
@@ -37,53 +35,46 @@ public class MainActivity extends Activity {
             return insets;
         });
         mainRoot.requestApplyInsets();
-        statusText = findViewById(R.id.statusText);
-        appList = findViewById(R.id.appList);
-        Button addBatteryButton = findViewById(R.id.addBatteryButton);
-        Button addClockButton = findViewById(R.id.addClockButton);
-        Button addUrlButton = findViewById(R.id.addUrlButton);
-        addBatteryButton.setOnClickListener(v -> requestPinWidget(BatteryWidgetProvider.class, "大电量"));
-        addClockButton.setOnClickListener(v -> requestPinWidget(ClockWidgetProvider.class, "大钟表"));
-        addUrlButton.setOnClickListener(v -> startActivity(ShortcutConfigureActivity.createUrlIntent(this)));
-        loadApps();
+
+        widthSpinner = findViewById(R.id.widthSpinner);
+        heightSpinner = findViewById(R.id.heightSpinner);
+        addShortcutButton = findViewById(R.id.addShortcutButton);
+        initSpinners();
+        addShortcutButton.setOnClickListener(v -> addEmptyShortcutWidget());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        BatteryWidgetProvider.updateAll(this);
         ShortcutWidgetProvider.updateAll(this);
     }
 
-    private void loadApps() {
-        final List<AppEntry> apps = AppLoader.loadLaunchableApps(this);
-        statusText.setText("共找到 " + apps.size() + " 个应用，点一个设置大图标");
-        InstalledAppAdapter adapter = new InstalledAppAdapter(this, apps);
-        appList.setAdapter(adapter);
-        appList.setOnItemClickListener((parent, view, position, id) -> {
-            AppEntry app = apps.get(position);
-            Intent intent = ShortcutConfigureActivity.createIntent(this, app);
-            startActivity(intent);
-        });
+    private void initSpinners() {
+        String[] values = new String[]{"1 格", "2 格", "3 格", "4 格"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, values);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        widthSpinner.setAdapter(adapter);
+        heightSpinner.setAdapter(adapter);
+        widthSpinner.setSelection(1);
+        heightSpinner.setSelection(1);
     }
 
-    private void requestPinWidget(Class<?> providerClass, String name) {
+    private void addEmptyShortcutWidget() {
         if (!appWidgetManager.isRequestPinAppWidgetSupported()) {
-            Toast.makeText(this, "当前桌面不支持直接添加，请长按桌面进入小部件添加" + name, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "当前桌面不支持直接添加，请长按桌面进入小部件添加大应用入口", Toast.LENGTH_LONG).show();
             return;
         }
 
-        Intent callbackIntent = new Intent(this, MainActivity.class);
-        PendingIntent callback = PendingIntent.getActivity(
-                this,
-                providerClass.getName().hashCode(),
-                callbackIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-        );
-        boolean requested = appWidgetManager.requestPinAppWidget(new ComponentName(this, providerClass), null, callback);
+        addShortcutButton.setEnabled(false);
+        int width = widthSpinner.getSelectedItemPosition() + 1;
+        int height = heightSpinner.getSelectedItemPosition() + 1;
+        ComponentName provider = WidgetComponentMap.shortcutComponent(this, width, height);
+        boolean requested = appWidgetManager.requestPinAppWidget(provider, null, null);
         if (requested) {
-            Toast.makeText(this, "请在桌面弹窗里确认添加" + name, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请在桌面弹窗里确认。添加后点桌面上的“点我设置”。", Toast.LENGTH_LONG).show();
+            finish();
         } else {
+            addShortcutButton.setEnabled(true);
             Toast.makeText(this, "没有弹出确认窗口，请长按桌面手动添加小部件", Toast.LENGTH_LONG).show();
         }
     }

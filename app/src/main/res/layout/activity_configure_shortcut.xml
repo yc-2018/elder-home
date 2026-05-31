@@ -34,7 +34,18 @@
             android:layout_height="58dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/button_secondary"
-            android:text="选择应用"
+            android:text="选择应用入口"
+            android:textColor="@color/elder_accent"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/urlModeButton"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_secondary"
+            android:text="填写 URL 入口"
             android:textColor="@color/elder_accent"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -98,6 +109,7 @@
                 android:textSize="22sp" />
 
             <TextView
+                android:id="@+id/sizeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -107,6 +119,7 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/sizeRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
